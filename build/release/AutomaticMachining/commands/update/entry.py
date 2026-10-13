@@ -226,9 +226,6 @@ def update_event(args: adsk.core.CustomEventArgs) -> None:
                 _latest = update_service.ReleaseInfo(**payload['release'])
                 has_update = update_service.is_newer(_latest.version, version.VERSION)
                 _refresh_dialog()
-                definition = ui.commandDefinitions.itemById(CMD_ID)
-                if definition:
-                    definition.name = f'Update to {_latest.version}' if has_update else CMD_NAME
                 if has_update and _notify_when_complete:
                     ui.messageBox(
                         f'Automatic Machining {_latest.version} is available.\n\n'

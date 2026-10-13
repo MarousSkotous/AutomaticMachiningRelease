@@ -34,9 +34,17 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         shell: pwsh
         run: |
-          gh release create '${{ inputs.tag }}' `
-            --title "Automatic Machining ${{ inputs.tag }}" `
-            --notes "Windows installer and portable Fusion add-in package." `
-            build/release/AutomaticMachining-Windows-Setup.exe `
-            build/release/AutomaticMachining-Windows-Setup.exe.sha256 `
-            build/release/AutomaticMachining-Windows.zip
+          $assets = @(
+            'build/release/AutomaticMachining-Windows-Setup.exe',
+            'build/release/AutomaticMachining-Windows-Setup.exe.sha256',
+            'build/release/AutomaticMachining-Windows.zip'
+          )
+          gh release view '${{ inputs.tag }}' 2>$null
+          if ($LASTEXITCODE -eq 0) {
+            gh release upload '${{ inputs.tag }}' @assets --clobber
+          } else {
+            gh release create '${{ inputs.tag }}' `
+              --title "Automatic Machining ${{ inputs.tag }}" `
+              --notes "Windows installer and portable Fusion add-in package." `
+              @assets
+          }

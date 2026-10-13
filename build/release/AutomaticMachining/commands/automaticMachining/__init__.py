@@ -1,0 +1,1 @@
+"""Automatic machining command package."""

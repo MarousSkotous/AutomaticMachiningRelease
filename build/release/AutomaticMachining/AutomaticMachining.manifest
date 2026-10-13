@@ -1,0 +1,13 @@
+{
+	"autodeskProduct":	"Fusion",
+	"type":	"addin",
+	"author":	"ccsoftcz",
+	"description":	{
+		"":	"Batch creation of contour, pocket, and drilling CAM operations for Fusion models."
+	},
+	"version":	"0.3.0",
+	"runOnStartup":	true,
+	"supportedOS":	"windows|mac",
+	"editEnabled":	true,
+	"iconFilename":	"AddInIcon.svg"
+}

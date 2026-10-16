@@ -23,8 +23,8 @@ jobs:
         shell: pwsh
         run: |
           $version = '${{ inputs.tag }}'.TrimStart('v')
-          $manifest = Get-Content build\release\AutomaticMachining\AutomaticMachining.manifest | ConvertFrom-Json
-          if ($version -ne $manifest.version) { throw "Tag version $version does not match package $($manifest.version)" }
+          $manifest = Get-Content build\release\AutomaticMachining\AutomaticMachining.manifest | ConvertFrom-Json -AsHashtable
+          if ($version -ne $manifest['version']) { throw "Tag version $version does not match package $($manifest['version'])" }
           & 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe' "/DAM_VERSION=$version" installer\AutomaticMachining.iss
           Compress-Archive -Path build\release\AutomaticMachining -DestinationPath build\release\AutomaticMachining-Windows.zip -Force
           $path = 'build\release\AutomaticMachining-Windows-Setup.exe'

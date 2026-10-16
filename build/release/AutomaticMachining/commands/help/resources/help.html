@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Automatic Machining – nápověda</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f4f6f8;
+      --card: #ffffff;
+      --text: #18212b;
+      --muted: #5c6975;
+      --line: #dce2e8;
+      --accent: #0b7285;
+      --accent-soft: #e3f4f7;
+      --warning: #8a5200;
+      --warning-bg: #fff4d6;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1d2228;
+        --card: #262d35;
+        --text: #f1f4f6;
+        --muted: #b6c0ca;
+        --line: #3b4651;
+        --accent: #65c6d6;
+        --accent-soft: #203c43;
+        --warning: #ffd27a;
+        --warning-bg: #4a3a19;
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    header {
+      padding: 28px clamp(20px, 5vw, 48px) 24px;
+      color: #fff;
+      background: linear-gradient(130deg, #075b6b, #11859a);
+    }
+    header h1 { margin: 0 0 6px; font-size: 28px; }
+    header p { margin: 0; opacity: .9; }
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      display: flex;
+      gap: 8px;
+      padding: 10px clamp(16px, 4vw, 40px);
+      overflow-x: auto;
+      background: var(--card);
+      border-bottom: 1px solid var(--line);
+    }
+    nav a {
+      flex: 0 0 auto;
+      padding: 6px 10px;
+      color: var(--accent);
+      text-decoration: none;
+      border-radius: 6px;
+    }
+    nav a:hover { background: var(--accent-soft); }
+    main { max-width: 920px; margin: 0 auto; padding: 22px clamp(16px, 4vw, 40px) 48px; }
+    section {
+      margin: 0 0 18px;
+      padding: 20px 24px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+    h2 { margin: 0 0 12px; font-size: 21px; color: var(--accent); }
+    h3 { margin: 18px 0 6px; font-size: 16px; }
+    p, ol, ul { margin-top: 8px; }
+    li + li { margin-top: 5px; }
+    code {
+      padding: 2px 5px;
+      border-radius: 4px;
+      background: var(--accent-soft);
+      color: var(--text);
+    }
+    .note, .warning { padding: 12px 14px; border-radius: 8px; }
+    .note { background: var(--accent-soft); }
+    .warning { color: var(--warning); background: var(--warning-bg); }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 8px 9px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+    th { color: var(--muted); }
+    footer { color: var(--muted); text-align: center; padding: 4px 16px 28px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Automatic Machining</h1>
+    <p>Rychlá nápověda pro automatickou přípravu CAM úloh v Autodesk Fusion.</p>
+  </header>
+  <nav aria-label="Obsah">
+    <a href="#start">Začínáme</a>
+    <a href="#settings">Nastavení</a>
+    <a href="#operations">Operace</a>
+    <a href="#output">Výstup</a>
+    <a href="#updates">Aktualizace</a>
+    <a href="#problems">Potíže</a>
+  </nav>
+  <main>
+    <section id="start">
+      <h2>Začínáme</h2>
+      <ol>
+        <li>Ve Fusion otevřete projekt a zdrojovou složku v Data Panelu.</li>
+        <li>Přepněte se do <b>Manufacture / Machining</b>.</li>
+        <li>V panelu <b>AUTOMATIC MACHINING</b> spusťte <b>Automatic Machining</b>.</li>
+        <li>Vyberte zdroj, knihovnu nástrojů, stroj a požadované operace.</li>
+        <li>Zkontrolujte výstupní složku a spusťte zpracování.</li>
+      </ol>
+      <p class="note">Zdrojové modely se nemění. Doplněk vytváří cloudové kopie a CAM ukládá pouze do nich.</p>
+      <h3>Podporované zdroje</h3>
+      <ul>
+        <li><b>Active Fusion folder</b> – zpracuje soubory <code>.f3d</code> v právě otevřené cloudové složce.</li>
+        <li><b>Local folder</b> – importuje <code>.step</code>, <code>.stp</code> a <code>.f3d</code> z lokální složky, například z Google Drive.</li>
+      </ul>
+    </section>
+
+    <section id="settings">
+      <h2>Důležitá nastavení</h2>
+      <table>
+        <tr><th>Volba</th><th>Význam</th></tr>
+        <tr><td>Preset</td><td>Uložená kombinace nástrojů, stroje, operací a výstupů.</td></tr>
+        <tr><td>Destination</td><td>Název nové cloudové složky s opracovanými kopiemi.</td></tr>
+        <tr><td>Tool library</td><td>Fusion knihovna, ze které se vybírají frézy a vrtáky.</td></tr>
+        <tr><td>Machine</td><td>Stroj; při tvorbě NC kódu musí mít přiřazený postprocesor.</td></tr>
+        <tr><td>Paths</td><td>Vygeneruje dráhy nástrojů před uložením kopie.</td></tr>
+        <tr><td>NC code</td><td>Vytvoří NC program. Vyžaduje zapnuté <b>Paths</b>.</td></tr>
+      </table>
+      <p>Preset neukládá zdrojovou ani cílovou složku, protože ty se mění pro každou zakázku.</p>
+    </section>
+
+    <section id="operations">
+      <h2>Obráběcí operace</h2>
+      <ul>
+        <li><b>Contour</b> – vnější 2D kontura se zvoleným nástrojem a krokem do hloubky.</li>
+        <li><b>Pockets</b> – slepé a průchozí kapsy; podle prostoru se použije malý nebo velký nástroj.</li>
+        <li><b>Saw slots</b> – drážky vhodné pro pilový kotouč.</li>
+        <li><b>Bottom chamfer</b> – spodní modelovaná fazeta jako poslední 2D Contour operace.</li>
+        <li><b>Drilling</b> – jednoduché válcové otvory do nastaveného maximálního průměru.</li>
+      </ul>
+      <p class="warning"><b>Před obráběním vždy proveďte simulaci.</b> Automatická detekce nenahrazuje kontrolu upnutí, kolizí, orientace, nástrojů a postprocesoru.</p>
+    </section>
+
+    <section id="output">
+      <h2>Výstup a report</h2>
+      <p>Pro cíl <code>JOB_NAME</code> vznikne lokální složka <code>&lt;Reports&gt;/JOB_NAME/</code>. Vždy obsahuje PDF report; při zapnutém NC výstupu také programy pro úspěšně zpracované díly.</p>
+      <p>Závěrečná zpráva ukazuje počty dokončených a chybných souborů, první varování a cestu k PDF. Úplný seznam je v PDF a Fusion logu.</p>
+    </section>
+
+    <section id="updates">
+      <h2>Instalace a aktualizace ve Windows</h2>
+      <ol>
+        <li>Zavřete Fusion.</li>
+        <li>Spusťte <code>AutomaticMachining-Windows-Setup.exe</code>.</li>
+        <li>Po instalaci znovu spusťte Fusion.</li>
+      </ol>
+      <p>Tlačítko <b>Update</b> porovná nainstalovanou verzi s posledním vydáním. Instalátor se před spuštěním ověřuje kontrolním součtem SHA-256.</p>
+      <p><a href="https://github.com/MarousSkotous/AutomaticMachiningRelease/releases/latest">Otevřít poslední vydání na GitHubu</a></p>
+    </section>
+
+    <section id="problems">
+      <h2>Nejčastější potíže</h2>
+      <h3>Tlačítko není vidět</h3>
+      <p>Zkontrolujte, že jste v <b>Manufacture / Machining</b>, a v dialogu <b>Scripts and Add-Ins</b> doplněk zastavte a znovu spusťte.</p>
+      <h3>Není k dispozici nástroj</h3>
+      <p>Otevřete vybranou Fusion knihovnu. Fréza musí mít vyplněnou nenulovou délku břitu; vrták musí odpovídat průměrem v nastavené toleranci.</p>
+      <h3>NC kód se nevytvořil</h3>
+      <p>Zapněte <b>Paths</b> i <b>NC code</b> a ověřte, že vybraný stroj má přiřazený postprocesor.</p>
+      <h3>Model byl přeskočen</h3>
+      <p>Model musí obsahovat právě jedno viditelné plné těleso. Podrobnosti najdete v PDF reportu a Fusion logu.</p>
+    </section>
+  </main>
+  <footer>Automatic Machining 0.4.0 · offline nápověda je součástí instalace.</footer>
+</body>
+</html>

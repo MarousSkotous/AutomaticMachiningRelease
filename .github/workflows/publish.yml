@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: Release tag, for example v0.3.0
+        description: Release tag, for example v0.4.0
         required: true
 
 jobs:
@@ -23,6 +23,8 @@ jobs:
         shell: pwsh
         run: |
           $version = '${{ inputs.tag }}'.TrimStart('v')
+          $manifest = Get-Content build\release\AutomaticMachining\AutomaticMachining.manifest | ConvertFrom-Json
+          if ($version -ne $manifest.version) { throw "Tag version $version does not match package $($manifest.version)" }
           & 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe' "/DAM_VERSION=$version" installer\AutomaticMachining.iss
           Compress-Archive -Path build\release\AutomaticMachining -DestinationPath build\release\AutomaticMachining-Windows.zip -Force
           $path = 'build\release\AutomaticMachining-Windows-Setup.exe'
@@ -40,11 +42,8 @@ jobs:
             'build/release/AutomaticMachining-Windows.zip'
           )
           gh release view '${{ inputs.tag }}' 2>$null
-          if ($LASTEXITCODE -eq 0) {
-            gh release upload '${{ inputs.tag }}' @assets --clobber
-          } else {
-            gh release create '${{ inputs.tag }}' `
-              --title "Automatic Machining ${{ inputs.tag }}" `
-              --notes "Windows installer and portable Fusion add-in package." `
-              @assets
-          }
+          if ($LASTEXITCODE -eq 0) { throw "Release ${{ inputs.tag }} already exists and will not be overwritten." }
+          gh release create '${{ inputs.tag }}' `
+            --title "Automatic Machining ${{ inputs.tag }}" `
+            --notes "Windows installer and portable Fusion add-in package." `
+            @assets
